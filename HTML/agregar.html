@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Agregar datos de adopción</title>
+        <link rel="stylesheet" href="../CSS/Portada.css">
+        <link rel="stylesheet" href="../CSS/agregar.css">
+    </head>
+    <body>
+        <div class = "navbar">
+            <img id="logo-id" src="../CSS/extra/logo.png" alt="logo"/>
+            <h1>Elige adoptar!!</h1>
+            <a class= "navbar-page" href="../HTML/agregar.html">Agregar aviso de adopción</a>
+            <a class= "navbar-page" href="../HTML/Listado_aviso.html">Ver listado de adopción</a>
+            <a class= "navbar-page" href="../HTML/Estadisticas.html">Estadísticas</a>
+        </div>
+
+        <div id="val-box" hidden>
+            <h2 id="val-msg"></h2>
+            <ul id="val-list"></ul>
+        </div>
+
+        <form class="form" name="myForm">
+            <h1>Agregar aviso de adopción</h1>
+            
+            <div class="bloque">
+                <h2>Lugar de entrega</h2>
+                <label for="Región">Region</label>
+                <select id="Región" name="Región" required>
+                    <option value="">--Seleccione--</option>
+                </select>
+                <label for="Comuna">Comuna</label>
+                <select id="Comuna" name="Comuna" required>
+                    <option>--Seleccione--</option>
+                </select>
+                <label for="Sector">Sector</label>
+                <input id="Sector" name="Sector" type="text" maxlength="100">
+            </div>
+
+            <div class="bloque">
+                <h2>Datos del contacto</h2>
+                <label for="Nombre">Nombre</label>
+                <input id="Nombre" name="Nombre" type="text" minlength="3" maxlength="200" required>
+                <label for="Email">Email</label>
+                <input id="Email" name="Email" type="email" maxlength="100" required>
+                <label for="Numero">Numero de celular</label>
+                <input id="Numero" name="Numero" type="tel">
+                <label for="Contacto">Contactar por</label>
+                <div id="div_contactos">
+                    <select id="Contacto" name="Contacto">
+                    <option value="">--Seleccione--</option>
+                    <option>Whatsapp</option>
+                    <option>X</option>
+                    <option>Telegram</option>
+                    <option>Instagram</option>
+                    <option>Otro</option>
+                    </select>
+                    <input id="id_url" name="ID" type="text" minlength="4" maxlength="50" style="display:none;">
+                    <button class="agregar" type="button" id="contacto_btn">+</button>
+                </div>
+            </div>
+
+            <div class="bloque">
+                <h2>Datos de la mascota</h2>
+                <label for="Tipo">Tipo</label>
+                <select id="Tipo" name="Tipo" required>
+                    <option>--Seleccione--</option>
+                    <option value="Perro">Perro</option>
+                    <option value="Gato">Gato</option>
+                </select>
+                <label for="Cantidad">Cantidad</label>
+                <input id="Cantidad" name="Cantidad" type="number" min="1" step="1" required>
+                <label for="Edad">Edad</label>
+                <input id="Edad" name="Edad" type="number" min="1" step="1" required>
+                <label for="Unidad">Unidad medidad edad</label>
+                <select id="Unidad" name="Unidad_medida_edad" required>
+                    <option>--Seleccione--</option>
+                    <option value="meses">Meses</option>
+                    <option value="años">Años</option>
+                </select>
+                <label for="Fecha">Fecha disponible de entrega</label>
+                <input id="Fecha" name="Fecha disponible de entrega" type="datetime-local" required>
+                <label for="Descripción">Descripción</label>
+                <textarea id="Descripción" name="Descripción" cols="50" rows="10"></textarea>
+                <div id="div_fotos">
+                    <label for="Foto">Foto</label>
+                    <input id="Foto" name="Foto" type="file" accept="image/*" multiple required>
+                    <button class="agregar" type="button" id="fotos_btn">+</button>
+                </div>
+            </div>
+            <p><button type="button" id="submit-btn">Enviar</button></p>
+            <button type="button" id="Volver">Volver a Portada</button>
+        </form>
+        <script src="../JS/select.js"></script>
+        <script src="../JS/validacion.js"></script>  
+    </body>
+</html>
