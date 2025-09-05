@@ -13,3 +13,5 @@ Probé los archivos en tres navegadores: Chrome, Brave y Microsoft Edge.
 Cuando algún campo del formulario no es válido, la página hace scroll automático hacia el error. Esto evita la confusión de que no pasaba nada al presionar “Enviar”, ya que la casilla con los errores aparecía en la parte superior y no era visible de inmediato.
 
 En el archivo select.js se encuentran las funciones para añadir más contactos.
+
+Para los gráficos utilice funciones de python para que fuera aleatorio y los corrí en colab, luego puse las capturas.
