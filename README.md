@@ -15,3 +15,5 @@ Cuando algún campo del formulario no es válido, la página hace scroll automá
 En el archivo select.js se encuentran las funciones para añadir más contactos.
 
 Para los gráficos utilice funciones de python para que fuera aleatorio y los corrí en colab, luego puse las capturas.
+
+Revise en los validadores de W3C subiendo los HTML y CSS uno por uno y corregí todo los errores.
