@@ -41,11 +41,23 @@ const validacionSelect = (select) => {
   return select !== "" && select !== "--Seleccione--";
 };
 
+const inputFecha = document.getElementById("Fecha");
+const fechaMin = new Date();
+fechaMin.setHours(fechaMin.getHours() + 3);
+const año = fechaMin.getFullYear();
+const mes = String(fechaMin.getMonth() + 1).padStart(2, '0');
+const dia = String(fechaMin.getDate()).padStart(2, '0');
+const horas = String(fechaMin.getHours()).padStart(2, '0');
+const minutos = String(fechaMin.getMinutes()).padStart(2, '0');
+const fechaStr = `${año}-${mes}-${dia}T${horas}:${minutos}`;
+inputFecha.value = fechaStr;
+
+
 const validacionFecha = (fechaStr) => {
   if (!fechaStr) return false;
-  const fechaMin = new Date();
-  fechaMin.setHours(fechaMin.getHours() + 3);
   const fechaValor = new Date(fechaStr);
+  fechaValor.setSeconds(0, 0);
+  fechaMin.setSeconds(0, 0);
   return fechaValor >= fechaMin;
 };
 
@@ -181,12 +193,12 @@ const validacionForm = () =>{
     submitButton.addEventListener("click", () => {
       validationMessageElem.innerText = "Hemos recibido la información de adopción, muchas gracias y suerte!";
       validationListElem.textContent = ""
-      let backHomeButton = document.createElement("button");
-      backHomeButton.innerText = "Volver a la portada";
-      backHomeButton.addEventListener("click", () => {
+      let VolverButton = document.createElement("button");
+      VolverButton.innerText = "Volver a la portada";
+      VolverButton.addEventListener("click", () => {
         window.location.href = "../HTML/portada.html"; 
       });
-      validationListElem.appendChild(backHomeButton);
+      validationListElem.appendChild(VolverButton);
     });
 
     let backButton = document.createElement("button");
