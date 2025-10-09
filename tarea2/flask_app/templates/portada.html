@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Adopción perros y gatos{% endblock %}
+
+{% block content %}
+<h2 class="aviso">Bienvenido a la mejor pagina de adopción del mundo, si adoptas estas salvando una vida. A continuación se mostrarán los últimos avisos:</h2>
+
+<div class="aviso">
+    {% for aviso in ultimos %}
+    <div class="aviso_bloque">
+        <img src="{{ url_for('static', filename='uploads/' ~ aviso.foto) }}" alt="Foto de {{ aviso.tipo }}">
+        <p>
+            {{ aviso.cantidad }} {{ aviso.tipo }} de {{ aviso.edad }} {{ 'meses' if aviso.unidad_edad=='m' else 'años' }} <br>
+            {{ aviso.sector }} <br>
+            {{ aviso.comuna }} <br>
+            {{ aviso.fecha_publicacion}}
+        </p>
+    </div>
+    {% else %}
+    <p>No hay avisos de adopción por el momento.</p>
+    {% endfor %}
+</div>
+{% endblock %}

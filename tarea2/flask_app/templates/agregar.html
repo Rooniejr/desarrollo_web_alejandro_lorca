@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% block title %}Agregar datos de adopción{% endblock %}
+
+{% block css %} 
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='CSS/agregar.css')}}"/>
+{% endblock %}
+
+{% block content %}
+
+{% if error %}
+    <div class="error-container">
+        <ul>
+        {% for e in error %}
+            <li>{{ e }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+
+<!-- Caja de validación / confirmación -->
+<div id="val-box" hidden style="padding: 1em; border-left: 5px solid; margin-bottom: 1em;">
+    <p id="val-msg"></p>
+    <ul id="val-list"></ul>
+</div>
+
+<form class="form" name="myForm" method="post" action="{{ url_for('post_aviso') }}" enctype="multipart/form-data">
+    <h1>Agregar aviso de adopción</h1>
+    
+    <div class="bloque">
+        <h2>Lugar de entrega</h2>
+        <label for="Región">Región</label>
+        <select id="Región" name="Región" required>
+            <option value="">--Seleccione--</option>
+        </select>
+
+        <label for="Comuna">Comuna</label>
+        <select id="Comuna" name="Comuna" required>
+            <option value="">--Seleccione--</option>
+        </select>
+
+        <label for="Sector">Sector</label>
+        <input id="Sector" name="Sector" type="text" maxlength="100">
+    </div>
+
+    <div class="bloque">
+        <h2>Datos del contacto</h2>
+        <label for="Nombre">Nombre</label>
+        <input id="Nombre" name="Nombre" type="text" minlength="3" maxlength="200" required>
+        
+        <label for="Email">Email</label>
+        <input id="Email" name="Email" type="email" maxlength="100" required>
+        
+        <label for="Numero">Número de celular</label>
+        <input id="Numero" name="Numero" type="tel">
+        
+        <label for="Contacto">Contactar por</label>
+        <div id="div_contactos">
+            <select id="Contacto" name="Contacto[]">
+                <option value="">--Seleccione--</option>
+                <option value="Whatsapp">Whatsapp</option>
+                <option value="X">X</option>
+                <option value="Telegram">Telegram</option>
+                <option value="Instagram">Instagram</option>
+                <option value="Otro">Otro</option>
+            </select>
+            
+            <input id="id_url" name="ID[]" type="text" minlength="4" maxlength="50" style="display:none;">
+            <button class="agregar" type="button" id="contacto_btn">+</button>
+        </div>
+    </div>
+
+    <div class="bloque">
+        <h2>Datos de la mascota</h2>
+        <label for="Tipo">Tipo</label>
+        <select id="Tipo" name="Tipo" required>
+            <option value="">--Seleccione--</option>
+            <option value="Perro">Perro</option>
+            <option value="Gato">Gato</option>
+        </select>
+        
+        <label for="Cantidad">Cantidad</label>
+        <input id="Cantidad" name="Cantidad" type="number" min="1" step="1" required>
+        
+        <label for="Edad">Edad</label>
+        <input id="Edad" name="Edad" type="number" min="1" step="1" required>
+        
+        <label for="Unidad">Unidad medida edad</label>
+        <select id="Unidad" name="Unidad_medida_edad" required>
+            <option value="">--Seleccione--</option>
+            <option value="m">Meses</option>
+            <option value="a">Años</option>
+        </select>
+        
+        <label for="Fecha">Fecha disponible de entrega</label>
+        <input id="Fecha" name="Fecha_entrega" type="datetime-local" required>
+        
+        <label for="Descripción">Descripción</label>
+        <textarea id="Descripción" name="Descripción" cols="50" rows="10"></textarea>
+        
+        <div id="div_fotos">
+            <label for="Foto">Foto</label>
+            <input id="Foto" name="Foto[]" type="file" accept="image/*" multiple required>
+            <button class="agregar" type="button" id="fotos_btn">+</button>
+        </div>
+    </div>
+    <p><button type="button" id="submit-btn">Enviar</button></p>
+    <button type="button" id="Volver">Volver a Portada</button>
+</form>
+
+{% endblock %}
+
+{% block javascript %}
+<script lang="javascript" src="{{ url_for('static', filename='JS/select.js') }}"></script>
+<script lang="javascript" src="{{ url_for('static', filename='JS/validacion.js') }}"></script>
+{% endblock %}
