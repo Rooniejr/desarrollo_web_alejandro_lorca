@@ -1,10 +1,11 @@
-from flask import Flask, request, render_template, redirect, url_for, session
-from utils.validations import validador_maximus
+from flask import Flask, request, render_template, redirect, url_for, session, jsonify
+from utils.validations import validador_maximus, validar_comentario
 from database import db
 from werkzeug.utils import secure_filename
 import hashlib
 import filetype
 import os
+from flask_cors import cross_origin
 
 UPLOAD_FOLDER = 'static/uploads'
 
@@ -18,7 +19,6 @@ def portada():
     ultimos= []
     for avisos in db.get_ultimos_avisos(n=5):
         fotos = db.get_fotos(avisos.id)
-        print(fotos)
         foto = fotos[0] if fotos != [] else None
         ultimos.append({
             "fecha_publicacion": avisos.fecha_ingreso,
@@ -162,16 +162,52 @@ def info_listado():
     return render_template('info_listado.html',
                            datos_fotos=datos_fotos,
                            datos_contacto=datos_contacto,
-                           datos=datos)
+                           datos=datos,
+                           id_aviso=id_aviso)
     
 @app.route("/estadisticas")
 def estadisticas():
-    graficos = [
-        url_for('static', filename='extra/grafico_barras.png'),
-        url_for('static', filename='extra/grafico_lineas.png'),
-        url_for('static', filename='extra/grafico_torta.png')
-    ]
-    return render_template("estadisticas.html", graficos=graficos)
+    return render_template("estadisticas.html")
+
+@app.route("/get-estadisticas-data", methods=["GET"])
+@cross_origin(origin="127.0.0.1", supports_credentials=True)
+def get_estadisticas_data():
+    data = db.get_estadisticas()
+    return jsonify(data)
+
+@app.route("/lista_comentarios", methods=['GET'])
+def lista_comentarios():
+    aviso_id = request.args.get('ID', type=int)
+    if not aviso_id:
+        return jsonify([])  # Si no hay ID, devolvemos lista vacía
+    comentarios = db.obtener_comentarios(aviso_id)
+    return jsonify(comentarios)
+
+@app.route("/agregar_comentarios", methods=['POST'])
+def agregar_comentarios():
+    data = request.get_json()
+    print("Data recibida:", data)  
+    nombre = data.get('nombre', '').strip()
+    texto = data.get('texto', '').strip()
+    aviso_id = data.get('aviso_id')
+
+    print("aviso_id recibido:", aviso_id)
+
+    # Llamamos a la función de validación
+    errores = validar_comentario(nombre, texto)
+
+    if errores:
+        return jsonify({"success": False, "errores": errores})
+
+    comentario = db.agregar_comentario(aviso_id, nombre, texto)
+    return jsonify({
+        "success": True,
+        "comentario": {
+            "nombre": comentario.nombre,
+            "texto": comentario.texto,
+            "fecha": comentario.fecha.strftime("%Y-%m-%d %H:%M")
+        }
+    })
 
 if __name__ == "__main__":
     app.run(debug=True)

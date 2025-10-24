@@ -54,10 +54,25 @@
     <!-- Modal -->
     <div id="modal" class="modal">
         <span id="cerrar">X</span>
-        <img id="modal-img" src="placeholder.png" alt="Imagen grande">
+        <img id="modal-img" src="{{ url_for('static', filename='placeholder.png') }}" alt="Imagen grande">
     </div>
 
     {% endif %}
+
+    <div id="comentarios-container">
+        <h3>Comentarios</h3>
+        <div id="comentarios-listado"></div>
+
+        <h4>Agregar comentario</h4>
+        <form id="form-comentario">
+            <input type="hidden" id="id_aviso" value="{{id_aviso}}" name="id_aviso">
+            <input type="text" id="nombre" placeholder="Nombre" required minlength="3" maxlength="80"><br>
+            <textarea id="texto" rows="4" cols="50" placeholder="Comentario" required minlength="5"></textarea><br>
+            <button type="submit">Agregar comentario</button>
+        </form>
+        <div id="errores" style="color:red;"></div>
+    </div>
+
 </div>
 
 <!-- Botones de navegación -->
@@ -66,5 +81,5 @@
 {% endblock %}
 
 {% block javascript %}
-<script lang="javascript" src="{{ url_for('static', filename='JS/listado.js') }}"></script>
+<script src="{{ url_for('static', filename='JS/listado.js') }}"></script>
 {% endblock %}

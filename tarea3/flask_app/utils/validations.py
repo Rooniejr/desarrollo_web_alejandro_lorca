@@ -108,3 +108,11 @@ def validador_maximus(data):
         errores.append("La comuna y la región no coinciden.")
 
     return errores
+
+def validar_comentario(nombre, texto):
+    errores = []
+    if not nombre or len(nombre) < 3:
+        errores.append("El nombre debe tener al menos 3 caracteres.")
+    if not texto or len(texto) < 5:
+        errores.append("El comentario debe tener al menos 5 caracteres.")
+    return errores

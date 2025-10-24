@@ -2,6 +2,8 @@ from sqlalchemy import create_engine, Column, Integer, BigInteger, String, Forei
 from sqlalchemy.orm import sessionmaker, declarative_base, relationship
 from datetime import datetime
 import enum
+from sqlalchemy import func
+
 
 DB_NAME = "tarea2"
 DB_USERNAME = "cc5002"
@@ -26,7 +28,7 @@ class AvisoAdopcion(Base):
     __tablename__ = 'aviso_adopcion'
 
     id = Column(BigInteger, primary_key=True, autoincrement=True)
-    fecha_ingreso = Column(DateTime, default=datetime.utcnow, nullable=False)
+    fecha_ingreso = Column(DateTime, default=datetime.now, nullable=False)
     comuna_id = Column(BigInteger, ForeignKey('comuna.id'))
     sector = Column(String(100), nullable=True)
     nombre = Column(String(200), nullable=False)
@@ -36,7 +38,7 @@ class AvisoAdopcion(Base):
     cantidad = Column(Integer, nullable=False)
     edad = Column(Integer, nullable=False)
     unidad_medida = Column(Enum(UnidadEnum), nullable=False)
-    fecha_entrega = Column(DateTime, default=datetime.utcnow, nullable=False)
+    fecha_entrega = Column(DateTime, default=datetime.now, nullable=False)
     descripcion = Column(Text(500), nullable=True)
 
     # Un aviso puede tener muchas fotos y muchas formas de contacto
@@ -93,6 +95,15 @@ class Region(Base):
 
     # Una región tiene muchas comunas
     comunas = relationship("Comuna", back_populates="region", cascade="all, delete")
+
+class Comentario(Base):
+    __tablename__ = 'comentario'
+
+    id = Column(BigInteger, primary_key=True, autoincrement=True)
+    nombre = Column(String(80), nullable=False)
+    texto = Column(String(300), nullable=False)
+    fecha = Column(DateTime, nullable=False)
+    aviso_id = Column(BigInteger, ForeignKey('aviso_adopcion.id'), nullable=False)
 
 # --- Database Functions ---
 
@@ -200,3 +211,72 @@ def get_aviso_by_id(id_aviso):
     aviso = session.query(AvisoAdopcion).filter_by(id=id_aviso).first()
     session.close()
     return aviso
+
+def get_estadisticas():
+    session = SessionLocal() 
+    try:
+        avisos_por_dia = (
+            session.query(
+                func.date(AvisoAdopcion.fecha_ingreso).label('fecha'),
+                func.count(AvisoAdopcion.id).label('cantidad')
+            )
+            .group_by(func.date(AvisoAdopcion.fecha_ingreso))
+            .order_by(func.date(AvisoAdopcion.fecha_ingreso))
+            .all()
+        )
+
+        avisos_por_tipo = (
+            session.query(
+                AvisoAdopcion.tipo,
+                func.count(AvisoAdopcion.id).label('cantidad')
+            )
+            .group_by(AvisoAdopcion.tipo)
+            .all()
+        )
+
+        avisos_por_mes_y_tipo = (
+            session.query(
+                func.DATE_FORMAT(AvisoAdopcion.fecha_ingreso, "%Y-%m").label('mes'),
+                AvisoAdopcion.tipo,
+                func.count(AvisoAdopcion.id).label('cantidad')
+            )
+            .group_by(func.DATE_FORMAT(AvisoAdopcion.fecha_ingreso, "%Y-%m"), AvisoAdopcion.tipo)
+            .order_by(func.DATE_FORMAT(AvisoAdopcion.fecha_ingreso, "%Y-%m"))
+            .all()
+        )
+
+        data = {
+            "por_dia": [{"fecha": str(f), "cantidad": c} for f, c in avisos_por_dia],
+            "por_tipo": [{"tipo": t, "cantidad": c} for t, c in avisos_por_tipo],
+            "por_mes_y_tipo": [{"mes": m, "tipo": t, "cantidad": c} for m, t, c in avisos_por_mes_y_tipo]
+        }
+        
+        return data
+    
+    finally:
+        session.close()
+
+def agregar_comentario(aviso_id, nombre, texto):
+    session = SessionLocal()
+    comentario = Comentario(
+        aviso_id=aviso_id,
+        nombre=nombre,
+        texto=texto,
+        fecha=datetime.now()
+    )
+    session.add(comentario)
+    session.commit()
+    session.refresh(comentario)
+    session.close()
+    return comentario
+
+def obtener_comentarios(aviso_id):
+    session = SessionLocal()
+    comentarios = session.query(Comentario).filter_by(aviso_id=aviso_id).order_by(Comentario.fecha.desc()).all()
+    resultado = [{
+        "nombre": c.nombre,
+        "texto": c.texto,
+        "fecha": c.fecha.strftime("%Y-%m-%d %H:%M")
+    } for c in comentarios]
+    session.close()
+    return resultado
