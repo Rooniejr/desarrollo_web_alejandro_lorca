@@ -4,7 +4,7 @@ Las llamadas asíncronas las hice con JavaScript usando fetch, igual que en el a
 
 Para la parte de evaluar, usé un modal que solo permite elegir números enteros (1 al 7). Lo hice así para que la validación fuera más simple y evitar que entren valores raros. También redondeé los promedios de las evaluaciones directamente en el JS usando Math.round().
 
-También agregué una función para formatear la fecha y mostrarla en formato de 24 horas. Varias partes de la tarea las saqué de las guías oficiales de Spring: https://spring.io/guide
+También agregué una función para formatear la fecha y mostrarla en formato de 24 horas. Varias partes de la tarea las saqué de las guías oficiales de Spring: https://spring.io/guides
 
 Tuve que crear un controlador para la ruta inicial (/) porque la app no entraba directo al index.html. Pensé que Thymeleaf lo tomaría solo, pero no fue así.
 
