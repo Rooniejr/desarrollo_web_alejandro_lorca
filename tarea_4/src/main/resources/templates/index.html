@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <title>Avisos</title>
+        <link rel="stylesheet" href="/css/avisos.css">
+        <script src="/js/avisos.js"></script>
+    </head>
+    <body>
+        <h1>Listado de Avisos</h1>
+        <table id="tablaAvisos" style="border: 1px solid black;"></table>
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <h3>Seleccione una nota</h3>
+                <div class="notas-grid">
+                    <button onclick="enviarNota(1)">1</button>
+                    <button onclick="enviarNota(2)">2</button>
+                    <button onclick="enviarNota(3)">3</button>
+                    <button onclick="enviarNota(4)">4</button>
+                    <button onclick="enviarNota(5)">5</button>
+                    <button onclick="enviarNota(6)">6</button>
+                    <button onclick="enviarNota(7)">7</button>
+                </div>
+
+                <button class="cerrar" onclick="cerrarModal()">Cancelar</button>
+            </div>
+        </div>
+    </body>
+</html>
