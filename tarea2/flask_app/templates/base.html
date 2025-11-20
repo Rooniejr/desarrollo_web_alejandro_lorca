@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>{% block title %}{% endblock %}</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='CSS/Portada.css') }}"
+    />
+    {% block css %}{% endblock %}
+  </head>
+  <body>
+    <div class="navbar">
+      <img
+        id="logo-id"
+        src="{{ url_for('static', filename='extra/logo.png') }}"
+        alt="Logo de navbar"
+      />
+      <h1>Elige adoptar!</h1>
+      <a class="navbar-page" href="{{ url_for('post_aviso') }}">Agregar aviso de adopción</a>
+      <a class="navbar-page" href="{{ url_for('listado') }}">Ver listado de adopción</a>
+      <a class="navbar-page" href="{{ url_for('estadisticas') }}">Estadísticas</a>
+    </div>
+  </body>
+  <section class="main-container">
+    {% block content %}{% endblock %} {% block javascript %}{% endblock %}
+  </section>
+</html>
